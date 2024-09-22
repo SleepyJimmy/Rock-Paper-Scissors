@@ -1,4 +1,3 @@
-let choices = ["scissors", "rock", "paper"];
 let humanScore = 0;
 let computerScore = 0;
 
@@ -11,16 +10,6 @@ function getComputerChoice() {
     } else {
         return "paper";
     }
-}
-
-
-function getHumanChoice() {
-    choice = null;
-
-    while (!choices.includes(choice)) {
-        choice = prompt("Rock, Paper, or Scissors?").toLowerCase();
-    }
-    return choice;
 }
 
 
@@ -59,13 +48,34 @@ function playRound(humanChoice, computerChoice) {
 }
 
 
-function playGame() {
-    for (let i = 0; i < 5; i++) {
-        const humanChoice = getHumanChoice()
-        const computerChoice = getComputerChoice()
-        playRound(humanChoice, computerChoice)
-    }
-}
+const container = document.querySelector("#container");
 
-playGame()
-console.log(`Human Score: ${humanScore}, Computer Score: ${computerScore}`)
+const new_div = document.createElement("div");
+new_div.style.marginTop = "50px";
+new_div.textContent = `Human Score: ${humanScore}, Computer Score: ${computerScore}`
+container.appendChild(new_div);
+
+
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        humanChoice = button.textContent;
+        playRound(humanChoice, getComputerChoice());
+        new_div.textContent = `Human Score: ${humanScore}, Computer Score: ${computerScore}`
+       
+        if (humanScore == 5) {
+            new_div.textContent = "HUMAN WINS!";
+            disableButton();
+        } else if (computerScore == 5) {
+            new_div.textContent = "COMPUTER WINS :(";
+            disableButton();
+        }
+    });
+});
+
+
+const disableButton = () => {
+    buttons.forEach((button) => {
+        button.disabled = true;
+    });
+};
